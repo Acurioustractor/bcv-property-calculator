@@ -141,7 +141,10 @@ function updateCalculations() {
     const conservationSize = totalPropertyHa - residenceSize;
     const residenceValue = residenceSize * valuePerHa;
     const conservationValue = conservationSize * valuePerHa;
-    const knightGiftValue = conservationValue;
+    
+    // Ensure conservation gift value is reasonable (cap at property purchase price)
+    const maxConservationGift = Math.min(conservationValue, newPropertyPrice * 0.9); // Max 90% of purchase price
+    const knightGiftValue = maxConservationGift;
     
     // Update property portfolio displays
     if (document.getElementById('bcvEquity')) {
@@ -155,12 +158,20 @@ function updateCalculations() {
         document.getElementById('knightConservationGift').textContent = formatCurrencyFull(knightGiftValue);
     }
     
-    // Partner Contribution Calculations
+    // Partner Contribution Calculations with reasonable limits
     const housingSubsidyNPV = housingSubsidy * subsidyYears * 0.77; // Rough NPV with 5% discount
     const nicTotalContribution = bcvEquity + nicOperationalValue;
     const knightTotalContribution = knightGiftValue + housingSubsidyNPV;
-    const blueSummitTotalContribution = blueSummitValue + operationalSystems;
-    const philanthropistTotalContribution = nurseryRenovation + employmentProgram;
+    
+    // Cap partner contributions at reasonable levels to prevent UI scaling issues
+    const cappedBlueSummitValue = Math.min(blueSummitValue, 5000000); // Cap at $5M
+    const cappedOperationalSystems = Math.min(operationalSystems, 1000000); // Cap at $1M
+    const blueSummitTotalContribution = cappedBlueSummitValue + cappedOperationalSystems;
+    
+    const cappedNurseryRenovation = Math.min(nurseryRenovation, 1000000); // Cap at $1M
+    const cappedEmploymentProgram = Math.min(employmentProgram, 500000); // Cap at $500K
+    const philanthropistTotalContribution = cappedNurseryRenovation + cappedEmploymentProgram;
+    
     const totalPartnerContributions = nicTotalContribution + knightTotalContribution + blueSummitTotalContribution + philanthropistTotalContribution;
     
     // Calculate equity percentages
