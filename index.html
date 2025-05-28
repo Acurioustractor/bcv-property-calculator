@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCV Property Financial Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>🌿 Black Cockatoo Valley Property Calculator</h1>
+        <p class="subtitle">Calculate debt payoff strategy for $3.5M ACT properties</p>
+        
+        <!-- Property Portfolio Section -->
+        <div class="section portfolio-section">
+            <h2>🏘️ Property Portfolio Management</h2>
+            
+            <div class="property-cards-grid">
+                <div class="property-card">
+                    <h4>BCV Property (55ha)</h4>
+                    <div class="input-group">
+                        <label>Current Market Value ($)</label>
+                        <input type="number" id="bcvValue" value="1600000" step="50000" oninput="updateCalculations()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Outstanding Debt ($)</label>
+                        <input type="number" id="bcvDebt" value="900000" step="10000" oninput="updateCalculations()">
+                    </div>
+                    
+                    <div class="calculation-box">
+                        <div class="calc-row">
+                            <span>Net Equity</span>
+                            <span id="bcvEquity">$700,000</span>
+                        </div>
+                        <div class="calc-row">
+                            <span>Owner</span>
+                            <span>Nic (Personal)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <h4>589 Property (24.7ha)</h4>
+                    <div class="input-group">
+                        <label>Purchase Price ($)</label>
+                        <input type="number" id="newPropertyPrice" value="2515000" step="50000" oninput="updateCalculations()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Residence Portion (ha)</label>
+                        <input type="range" id="residenceSize" min="1" max="5" value="2.5" step="0.1" oninput="updateCalculations()">
+                        <div class="value-display" id="residenceSizeDisplay">2.5 ha</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Value per Hectare ($)</label>
+                        <input type="number" id="valuePerHa" value="100000" step="5000" oninput="updateCalculations()">
+                    </div>
+                    
+                    <div class="calculation-box">
+                        <div class="calc-row">
+                            <span>Conservation Land</span>
+                            <span id="conservationSize">22.2 ha</span>
+                        </div>
+                        <div class="calc-row">
+                            <span>Residence Value</span>
+                            <span id="residenceValue">$250,000</span>
+                        </div>
+                        <div class="calc-row">
+                            <span>Conservation Value</span>
+                            <span id="conservationValue">$2,220,000</span>
+                        </div>
+                        <div class="calc-row">
+                            <span>Knight Family Gift</span>
+                            <span id="knightGiftValue">$2,220,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <!-- Debt Section -->
+            <div class="section debt-section">
+                <h2>💰 ACT Properties Debt</h2>
+                
+                <div class="input-group">
+                    <label>Total Debt Amount</label>
+                    <input type="number" id="totalDebt" value="3500000" readonly style="background: #f5f5f5;">
+                </div>
+                
+                <div class="input-group">
+                    <label>Annual Interest Rate (%)</label>
+                    <input type="range" id="interestRate" min="3" max="8" value="5.5" step="0.1" oninput="updateCalculations()">
+                    <div class="value-display" id="interestRateDisplay">5.5%</div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Loan Term (years)</label>
+                    <input type="range" id="loanTerm" min="10" max="30" value="20" oninput="updateCalculations()">
+                    <div class="value-display" id="loanTermDisplay">20 years</div>
+                </div>
+                
+                <div class="calculation-box">
+                    <h4>Payment Breakdown</h4>
+                    <div class="calc-row">
+                        <span>Principal Amount</span>
+                        <span id="principalCalc">$3,500,000</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Monthly Payment</span>
+                        <span id="monthlyPaymentCalc">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Annual Payment</span>
+                        <span id="annualPaymentCalc">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Total Interest (life of loan)</span>
+                        <span id="totalInterestCalc">$0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Property Rental Revenue -->
+            <div class="section revenue-section">
+                <h2>🏠 Property Rental Income</h2>
+                
+                <div class="input-group">
+                    <label>589 Property - New House Weekly Rent ($)</label>
+                    <input type="range" id="newHouseRent" min="400" max="1200" value="800" step="50" oninput="updateCalculations()">
+                    <div class="value-display" id="newHouseRentDisplay">$800/week</div>
+                </div>
+                
+                <div class="input-group">
+                    <label>589 House Occupancy Rate (%)</label>
+                    <input type="range" id="newHouseOccupancy" min="50" max="100" value="85" oninput="updateCalculations()">
+                    <div class="value-display" id="newHouseOccupancyDisplay">85%</div>
+                </div>
+                
+                <hr style="margin: 20px 0; border: 1px solid #e0e0e0;">
+                
+                <div class="input-group">
+                    <label>BCV Property - House 1 Weekly Rent ($)</label>
+                    <input type="range" id="bcvHouse1Rent" min="300" max="800" value="500" step="50" oninput="updateCalculations()">
+                    <div class="value-display" id="bcvHouse1RentDisplay">$500/week</div>
+                </div>
+                
+                <div class="input-group">
+                    <label>BCV Property - House 2 Weekly Rent ($)</label>
+                    <input type="range" id="bcvHouse2Rent" min="300" max="800" value="450" step="50" oninput="updateCalculations()">
+                    <div class="value-display" id="bcvHouse2RentDisplay">$450/week</div>
+                </div>
+                
+                <div class="input-group">
+                    <label>BCV Property - Cabin 1 Weekly Rent ($)</label>
+                    <input type="range" id="bcvCabin1Rent" min="200" max="600" value="350" step="50" oninput="updateCalculations()">
+                    <div class="value-display" id="bcvCabin1RentDisplay">$350/week</div>
+                </div>
+                
+                <div class="input-group">
+                    <label>BCV Property - Cabin 2 Weekly Rent ($)</label>
+                    <input type="range" id="bcvCabin2Rent" min="200" max="600" value="350" step="50" oninput="updateCalculations()">
+                    <div class="value-display" id="bcvCabin2RentDisplay">$350/week</div>
+                </div>
+                
+                <div class="input-group">
+                    <label>BCV Properties Average Occupancy (%)</label>
+                    <input type="range" id="bcvOccupancy" min="50" max="100" value="75" oninput="updateCalculations()">
+                    <div class="value-display" id="bcvOccupancyDisplay">75%</div>
+                </div>
+                
+                <div class="calculation-box">
+                    <h4>Annual Rental Income</h4>
+                    <div class="calc-row">
+                        <span>589 New House</span>
+                        <span id="newHouseAnnual">$0</span>
+                    </div>
+                    <div class="calc-row sub-item">
+                        <span>($800/wk × 85% × 52 weeks)</span>
+                        <span></span>
+                    </div>
+                    <div class="calc-row">
+                        <span>BCV House 1</span>
+                        <span id="bcvHouse1Annual">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>BCV House 2</span>
+                        <span id="bcvHouse2Annual">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>BCV Cabin 1</span>
+                        <span id="bcvCabin1Annual">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>BCV Cabin 2</span>
+                        <span id="bcvCabin2Annual">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Total Rental Income</span>
+                        <span id="totalRentalIncome">$0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Revenue & Expenses -->
+            <div class="section additional-section">
+                <h2>💼 Additional Revenue & Expenses</h2>
+                
+                <div class="input-group">
+                    <label>Blue Summit Cottages Revenue ($)</label>
+                    <input type="number" id="blueSummitRevenue" value="800000" step="50000" oninput="updateCalculations()">
+                </div>
+                
+                <div class="input-group">
+                    <label>Restaurant Revenue ($)</label>
+                    <input type="number" id="restaurantRevenue" value="400000" step="50000" oninput="updateCalculations()">
+                </div>
+                
+                <div class="input-group">
+                    <label>Conservation Grants & Credits ($)</label>
+                    <input type="number" id="conservationRevenue" value="50000" step="10000" oninput="updateCalculations()">
+                </div>
+                
+                <div class="input-group">
+                    <label>Property Management Costs (%)</label>
+                    <input type="range" id="managementCosts" min="5" max="20" value="12" oninput="updateCalculations()">
+                    <div class="value-display" id="managementCostsDisplay">12%</div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Operating Expense Ratio (%)</label>
+                    <input type="range" id="operatingExpenses" min="30" max="60" value="45" oninput="updateCalculations()">
+                    <div class="value-display" id="operatingExpensesDisplay">45%</div>
+                </div>
+                
+                <div class="calculation-box">
+                    <h4>Revenue Summary</h4>
+                    <div class="calc-row">
+                        <span>Property Rentals</span>
+                        <span id="propertyRentalsSum">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Blue Summit</span>
+                        <span id="blueSummitSum">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Restaurant</span>
+                        <span id="restaurantSum">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Conservation</span>
+                        <span id="conservationSum">$0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Total Revenue</span>
+                        <span id="totalRevenueSum">$0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Partner Contributions Section -->
+        <div class="section partners-section">
+            <h2>🤝 Partner Contributions & Equity</h2>
+            
+            <div class="partner-grid">
+                <div class="partner-card">
+                    <h4>Nic/ACT</h4>
+                    <div class="contribution-item">
+                        <span>BCV Land Equity:</span>
+                        <span id="nicLandEquity">$700,000</span>
+                    </div>
+                    <div class="contribution-item">
+                        <label>Operational Value ($):</label>
+                        <input type="number" id="nicOperationalValue" value="200000" step="25000" oninput="updateCalculations()">
+                    </div>
+                    <div class="contribution-item">
+                        <span>Total Contribution:</span>
+                        <span id="nicTotalContribution">$900,000</span>
+                    </div>
+                    <div class="contribution-item">
+                        <span>Equity Percentage:</span>
+                        <span id="nicEquityPercent">15.0%</span>
+                    </div>
+                </div>
+                
+                <div class="partner-card">
+                    <h4>Knight Family</h4>
+                    <div class="contribution-item">
+                        <span>Conservation Gift:</span>
+                        <span id="knightConservationGift">$2,220,000</span>
+                    </div>
+                    <div class="contribution-item">
+                        <label>Annual Housing Subsidy ($):</label>
+                        <input type="number" id="housingSubsidy" value="26000" step="2000" oninput="updateCalculations()">
+                    </div>
+                    <div class="contribution-item">
+                        <label>Housing Subsidy Years:</label>
+                        <input type="range" id="subsidyYears" min="5" max="20" value="10" oninput="updateCalculations()">
+                        <div class="value-display" id="subsidyYearsDisplay">10 years</div>
+                    </div>
+                    <div class="contribution-item">
+                        <span>Housing Subsidy NPV:</span>
+                        <span id="housingSubsidyNPV">$200,000</span>
+                    </div>
+                    <div class="contribution-item">
+                        <span>Total Contribution:</span>
+                        <span id="knightTotalContribution">$2,420,000</span>
+                    </div>
+                    <div class="contribution-item">
+                        <span>Equity Percentage:</span>
+                        <span id="knightEquityPercent">40.3%</span>
+                    </div>
+                </div>
+                
+                <div class="partner-card">
+                    <h4>Blue Summit</h4>
+                    <div class="contribution-item">
+                        <label>Business Value ($):</label>
+                        <input type="number" id="blueSummitValue" value="3000000" step="100000" oninput="updateCalculations()">
+                    </div>
+                    <div class="contribution-item">
+                        <label>Operational Systems ($):</label>
+                        <input type="number" id="operationalSystems" value="500000" step="50000" oninput="updateCalculations()">
+                    </div>
+                    <div class="contribution-item">
+                        <span>Total Contribution:</span>
+                        <span id="blueSummitTotalContribution">$3,500,000</span>
+                    </div>
+                    <div class="contribution-item">
+                        <span>Equity Percentage:</span>
+                        <span id="blueSummitEquityPercent">58.3%</span>
+                    </div>
+                </div>
+                
+                <div class="partner-card">
+                    <h4>Philanthropist</h4>
+                    <div class="contribution-item">
+                        <label>Nursery Renovation ($):</label>
+                        <input type="number" id="nurseryRenovation" value="500000" step="50000" oninput="updateCalculations()">
+                    </div>
+                    <div class="contribution-item">
+                        <label>Employment Program ($):</label>
+                        <input type="number" id="employmentProgram" value="300000" step="25000" oninput="updateCalculations()">
+                    </div>
+                    <div class="contribution-item">
+                        <span>Total Contribution:</span>
+                        <span id="philanthropistTotalContribution">$800,000</span>
+                    </div>
+                    <div class="contribution-item">
+                        <span>Equity Percentage:</span>
+                        <span id="philanthropistEquityPercent">13.3%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="partnership-summary">
+                <h4>Partnership Summary</h4>
+                <div class="calc-row">
+                    <span>Total Partner Contributions</span>
+                    <span id="totalPartnerContributions">$6,000,000</span>
+                </div>
+                <div class="calc-row">
+                    <span>Voting Rights Basis</span>
+                    <select id="votingBasis" onchange="updateCalculations()">
+                        <option value="financial">Financial Contribution</option>
+                        <option value="equal">Equal Partnership</option>
+                        <option value="weighted">Weighted Formula</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Worker Housing Section -->
+        <div class="section housing-section">
+            <h2>🏠 Worker Housing Economics</h2>
+            
+            <div class="housing-grid">
+                <div class="housing-inputs">
+                    <div class="input-group">
+                        <label>Market Rent ($/week)</label>
+                        <input type="range" id="marketRent" min="400" max="1000" value="800" step="25" oninput="updateCalculations()">
+                        <div class="value-display" id="marketRentDisplay">$800/week</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Subsidized Rent ($/week)</label>
+                        <input type="range" id="subsidizedRent" min="200" max="600" value="300" step="25" oninput="updateCalculations()">
+                        <div class="value-display" id="subsidizedRentDisplay">$300/week</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Target Tenant</label>
+                        <select id="targetTenant" onchange="updateCalculations()">
+                            <option value="restaurant">Restaurant Manager</option>
+                            <option value="gardener">Head Gardener</option>
+                            <option value="conservation">Conservation Coordinator</option>
+                            <option value="single-mother">Single Mother Program</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="housing-calculations">
+                    <div class="calculation-box">
+                        <h4>Annual Housing Economics</h4>
+                        <div class="calc-row">
+                            <span>Market Value</span>
+                            <span id="annualMarketRent">$41,600</span>
+                        </div>
+                        <div class="calc-row">
+                            <span>Subsidized Income</span>
+                            <span id="annualSubsidizedRent">$15,600</span>
+                        </div>
+                        <div class="calc-row">
+                            <span>Annual Subsidy</span>
+                            <span id="annualSubsidyCost">$26,000</span>
+                        </div>
+                        <div class="calc-row">
+                            <span>Tax Benefit (30%)</span>
+                            <span id="housingTaxBenefit">$7,800</span>
+                        </div>
+                        <div class="calc-row">
+                            <span>Net Cost to Knight Family</span>
+                            <span id="netHousingCost">$18,200</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Dashboard -->
+        <div class="results-container">
+            <div class="result-card positive">
+                <div class="result-title">Total Annual Revenue</div>
+                <div class="result-value" id="totalRevenue">$0</div>
+                <div class="result-subtitle">All income streams</div>
+            </div>
+            
+            <div class="result-card negative">
+                <div class="result-title">Annual Debt Service</div>
+                <div class="result-value" id="debtService">$0</div>
+                <div class="result-subtitle">Principal + Interest</div>
+            </div>
+            
+            <div class="result-card info">
+                <div class="result-title">Operating Expenses</div>
+                <div class="result-value" id="totalOpEx">$0</div>
+                <div class="result-subtitle">Management + Operations</div>
+            </div>
+            
+            <div class="result-card positive">
+                <div class="result-title">Net Annual Cashflow</div>
+                <div class="result-value" id="netCashflow">$0</div>
+                <div class="result-subtitle">After all expenses</div>
+            </div>
+        </div>
+        
+        <!-- 5-Year Timeline -->
+        <div class="timeline-section">
+            <h2>📊 5-Year Projection</h2>
+            <div class="timeline-grid">
+                <div class="year-card">
+                    <h4>Year 1</h4>
+                    <div class="year-metric">Revenue: <strong id="year1Revenue">$0</strong></div>
+                    <div class="year-metric">Debt Service: <strong id="year1Debt">$0</strong></div>
+                    <div class="year-metric">Net Cash: <strong id="year1Net">$0</strong></div>
+                    <div class="year-metric">Loan Balance: <strong id="year1Balance">$0</strong></div>
+                </div>
+                <div class="year-card">
+                    <h4>Year 2</h4>
+                    <div class="year-metric">Revenue: <strong id="year2Revenue">$0</strong></div>
+                    <div class="year-metric">Debt Service: <strong id="year2Debt">$0</strong></div>
+                    <div class="year-metric">Net Cash: <strong id="year2Net">$0</strong></div>
+                    <div class="year-metric">Loan Balance: <strong id="year2Balance">$0</strong></div>
+                </div>
+                <div class="year-card">
+                    <h4>Year 3</h4>
+                    <div class="year-metric">Revenue: <strong id="year3Revenue">$0</strong></div>
+                    <div class="year-metric">Debt Service: <strong id="year3Debt">$0</strong></div>
+                    <div class="year-metric">Net Cash: <strong id="year3Net">$0</strong></div>
+                    <div class="year-metric">Loan Balance: <strong id="year3Balance">$0</strong></div>
+                </div>
+                <div class="year-card">
+                    <h4>Year 4</h4>
+                    <div class="year-metric">Revenue: <strong id="year4Revenue">$0</strong></div>
+                    <div class="year-metric">Debt Service: <strong id="year4Debt">$0</strong></div>
+                    <div class="year-metric">Net Cash: <strong id="year4Net">$0</strong></div>
+                    <div class="year-metric">Loan Balance: <strong id="year4Balance">$0</strong></div>
+                </div>
+                <div class="year-card">
+                    <h4>Year 5</h4>
+                    <div class="year-metric">Revenue: <strong id="year5Revenue">$0</strong></div>
+                    <div class="year-metric">Debt Service: <strong id="year5Debt">$0</strong></div>
+                    <div class="year-metric">Net Cash: <strong id="year5Net">$0</strong></div>
+                    <div class="year-metric">Loan Balance: <strong id="year5Balance">$0</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
